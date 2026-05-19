@@ -16,7 +16,7 @@ public class Utente {
     @Column(nullable = false) private String password;
     @Column(nullable = false) private String nome;
     @Column(nullable = false) private String cognome;
-    @Column(nullable = false) private Boolean isActive;
+    @Column(nullable = false) private Boolean active;
 
     @ManyToMany
     @JoinTable(
