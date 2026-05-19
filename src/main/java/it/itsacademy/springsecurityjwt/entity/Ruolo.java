@@ -11,5 +11,14 @@ import java.util.UUID;
 public class Ruolo {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idRuolo;
-    private String nome;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
+    private TipoRuolo tipo;
+
+    public enum TipoRuolo {
+        ADMIN,
+        USER,
+        VIEWER
+    }
 }
