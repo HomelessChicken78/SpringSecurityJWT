@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface RuoloRepository extends JpaRepository<Ruolo, UUID> {
-    Optional<Ruolo> findByNome(String nome);
+    Optional<Ruolo> findByTipo(Ruolo.TipoRuolo tipo);
 }
