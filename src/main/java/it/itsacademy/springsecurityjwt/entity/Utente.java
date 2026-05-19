@@ -11,7 +11,12 @@ import java.util.*;
 public class Utente {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID idUtente;
-    private String username, password, nome, cognome;
+
+    @Column(nullable = false) private String username;
+    @Column(nullable = false) private String password;
+    @Column(nullable = false) private String nome;
+    @Column(nullable = false) private String cognome;
+    @Column(nullable = false) private Boolean isActive;
 
     @ManyToMany
     @JoinTable(
