@@ -1,8 +1,6 @@
 package it.itsacademy.springsecurityjwt.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,6 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Ruolo {
-    @Id @GeneratedValue private UUID idRuolo;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID idRuolo;
     private String nome;
 }

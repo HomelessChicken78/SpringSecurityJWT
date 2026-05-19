@@ -9,7 +9,8 @@ import java.util.*;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Utente {
-    @Id @GeneratedValue private UUID idUtente;
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID idUtente;
     private String username, password, nome, cognome;
 
     @ManyToMany
