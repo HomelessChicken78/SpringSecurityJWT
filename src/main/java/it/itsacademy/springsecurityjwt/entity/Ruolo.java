@@ -11,7 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 public class Ruolo {
-    @Id @GeneratedValue
-    private UUID idUtente;
+    @Id @GeneratedValue private UUID idRuolo;
     private String nome;
 }
