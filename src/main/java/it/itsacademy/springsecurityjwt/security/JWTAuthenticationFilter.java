@@ -26,6 +26,9 @@ import java.io.IOException;
  * ne verifica la validità tramite JwtService. In caso di esito
  * positivo, carica i dettagli dell'utente dal database e lo autentica
  * ufficialmente all'interno del contesto di sicurezza di Spring.</p>
+ * <p>Se il token JWT non è presente (per esempio prima della login) il filtro
+ * non esegue nessun controllo e lascia che sia la filter chain a controllare
+ * che per quell'endpoint non vi sia bisogno di autenticazioni e autorizzazioni</p>
  */
 @Component
 @AllArgsConstructor
