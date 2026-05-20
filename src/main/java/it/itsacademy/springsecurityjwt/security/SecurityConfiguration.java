@@ -65,7 +65,7 @@ public class SecurityConfiguration {
             HttpSecurity http // DI dell'HttpSecurityConfiguration grazie a EnableWebSecurity
     ) {
         http.csrf(AbstractHttpConfigurer::disable) // Disabilitiamolo poichè inutile per le API stateless
-        // TODO disabilitare il CORS per postman
+        // TODO abilitare il CORS per postman
                 .authorizeHttpRequests( // Definiamo le regole di accesso per gli URL
                 // NB: le regole più specifiche vanno più in alto o bloccherebbe le altre
                   a ->
