@@ -63,6 +63,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
                 // Cerca nel database i dettagli completi dell'utente associato a quel nome.
                 // In questo modo ci assicuriamo che l'username già esista nel sistema.
+                // In teoria il controllo è già fatto dall'Identity Provider alla login. Tuttavia
+                // se non ricontrolliamo che l'utente esista a db potrebbe accadere che da quando abbiamo
+                // generato il token durante la login, l'utente sia stato cancellato o bannato prima della scadenza
+                // del token. Di fatto l'utente, anche se non esiste a db o anche se bannato potrebbe continuare a
+                // usare il token senza questo controllo. Questo controllo può essere omesso se siamo sicuri
+                // che il token duri poco (e.g. 15/30 minuti).
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
                 // Controlla che il token non sia scaduto e corrisponda effettivamente all'utente.
