@@ -33,6 +33,8 @@ public class AuthServiceImpl implements AuthService {
         // Solo l'encripter stesso potrà confrontare la password digitata con la password salvata nel db.
        String passwordCifrata = encoder.encode(utenteCreato.getPassword());
        utenteCreato.setPassword(passwordCifrata);
+
+       utenteRepository.save(utenteCreato); // Salva l'utente nel db
     }
 
     @Override
