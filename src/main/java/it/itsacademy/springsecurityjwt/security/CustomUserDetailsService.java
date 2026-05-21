@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 !utenteNelDB.getActive(),
-                ruoliToGrantedAuthorities(utenteNelDB.getSetRuoli())
+                new HashSet<>() // TODO momentaneamente messo cosi poichè hibernate ha problemi nel caricamento delle entità
         );
     }
 }
