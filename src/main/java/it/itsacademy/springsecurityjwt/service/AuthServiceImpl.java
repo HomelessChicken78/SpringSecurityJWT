@@ -19,7 +19,7 @@ public class AuthServiceImpl implements AuthService {
     private final RuoloRepository ruoloRepository;
     private final UtenteMapper mapper;
     private AuthenticationManager authenticationManager;
-   private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Override
     public void signUp(SignUpUtenteDTO signUpRequest) {
@@ -31,10 +31,11 @@ public class AuthServiceImpl implements AuthService {
 
         // Cifriamo la password: in questo modo nel db salviamo una stringa illeggibile anziché la vera password.
         // Solo l'encripter stesso potrà confrontare la password digitata con la password salvata nel db.
-       String passwordCifrata = encoder.encode(utenteCreato.getPassword());
-       utenteCreato.setPassword(passwordCifrata);
+        String passwordCifrata = encoder.encode(utenteCreato.getPassword());
+        utenteCreato.setPassword(passwordCifrata);
 
-       utenteRepository.save(utenteCreato); // Salva l'utente nel db
+        utenteRepository.save(utenteCreato); // Salva l'utente nel db
+
     }
 
     @Override
