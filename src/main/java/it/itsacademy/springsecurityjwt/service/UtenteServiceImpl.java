@@ -3,7 +3,6 @@ package it.itsacademy.springsecurityjwt.service;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.entity.Utente;
 import it.itsacademy.springsecurityjwt.exception.BadRequestException;
-import it.itsacademy.springsecurityjwt.exception.NotFoundException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
 import it.itsacademy.springsecurityjwt.repository.UtenteRepository;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,6 @@ package it.itsacademy.springsecurityjwt.service;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public interface UtenteService {
     Collection<UtenteDTO> getAllUtenti();
