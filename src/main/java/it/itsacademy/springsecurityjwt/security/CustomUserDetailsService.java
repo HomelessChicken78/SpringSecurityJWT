@@ -45,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 !utenteNelDB.getActive(),
-                new HashSet<>() // TODO momentaneamente messo cosi poichè hibernate ha problemi nel caricamento delle entità
+                ruoliToGrantedAuthorities(utenteNelDB.getSetRuoli()) // Possibile grazie all'Eager. Senza di quello la transazione finirebbe prima
         );
     }
 }

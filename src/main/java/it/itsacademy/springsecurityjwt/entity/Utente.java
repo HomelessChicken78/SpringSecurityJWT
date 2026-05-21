@@ -18,7 +18,18 @@ public class Utente {
     @Column(nullable = false) private String cognome;
     @Column(nullable = false) private Boolean active;
 
-    @ManyToMany
+    @ManyToMany(
+            // Questo serve a dire a hibernate: quando carichi un Utente, carica anche tutti i suoi ruoli.
+            // Hibernate, quando si cercano delle entità del database apre una sessione.
+            // La sessione viene chiusa dopo un pò.
+            // Normalmente in OneToMany e ManyToMany di default Hibernate ha un comportamento LAZY.
+            // Ciò significa che quando un Utente viene caricato viene salvato un Proxy del Ruolo (un Ruolo "finto")
+            // e solo quando si fa Utente.getSetRuoli Hibernate carica anche i Ruoli SE la sessione è ancora aperta.
+            // Se la sessione è chiusa e si cercano i Ruolo viene lanciata un'eccezione.
+            // Nel nostro caso usiamo Eager poichè, quando carichiamo i ruoli, abbiamo bisogno di caricare anche i ruoli
+            // per evitare che la sessione venga chiusa senza caricarli.
+            fetch = FetchType.EAGER
+    )
     @JoinTable(
             name = "utente_ruolo",
             joinColumns = @JoinColumn(name = "idUtente"),
