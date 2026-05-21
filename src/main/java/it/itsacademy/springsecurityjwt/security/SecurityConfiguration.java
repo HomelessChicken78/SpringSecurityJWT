@@ -88,10 +88,10 @@ public class SecurityConfiguration {
                 // NB: le regole più specifiche vanno più in alto o bloccherebbe le altre
                   a ->
                           // Permetti tutti gli endpoint di autenticazione senza avere autenticazioni
-                          a.requestMatchers("/api/auth/**").permitAll()
+                          a.requestMatchers("/auth/**").permitAll()
 
                           // Per fare GET /api/utenti l'utente deve essere admin
-                          .requestMatchers(HttpMethod.GET, "/api/utenti").hasAuthority("ADMIN")
+                          .requestMatchers(HttpMethod.GET, "/utenti").hasAuthority("ADMIN")
 
                           // Per gli altri devi essere almeno autenticato
                           .anyRequest().authenticated()
