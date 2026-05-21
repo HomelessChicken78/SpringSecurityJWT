@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Classe di servizio che si occupa di effettuare i controlli
@@ -21,6 +23,9 @@ public class JwtServiceImpl implements JwtService {
     // definita nel file "application.properties". È la password segreta del server.
     @Value("${security.jwt.secret-key}")
     private String secretKey;
+
+    @Value("${security.jwt.expiration}")
+    private long jwtExpirationMillis;
 
     /**
      * Metodo che riceve il token e restituisce il nome utente scritto al suo interno.
@@ -83,6 +88,25 @@ public class JwtServiceImpl implements JwtService {
         // 2. "!isTokenExpired(jwt)" Controlla che il token non sia scaduto.
         // Se entrambe le condizioni sono vere, il metodo ritorna true.
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(jwt);
+    }
+
+    @Override
+    public String createToken(String username, Map<String, Object> extraClaims) {
+        // Stessa cosa di prima per creare la chiave segreta
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        Key key = Keys.hmacShaKeyFor(keyBytes);
+
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMillis))
+                .signWith(key)
+                .compact();
+    }
+
+    @Override
+    public String createToken(String username) {
+        return createToken(username, new HashMap<>());
     }
 
     /**
