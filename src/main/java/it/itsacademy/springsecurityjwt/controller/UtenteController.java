@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(path = "/api/utenti")
+@RequestMapping(path = "/utenti")
 @RequiredArgsConstructor
 public class UtenteController {
     private final UtenteService service;
