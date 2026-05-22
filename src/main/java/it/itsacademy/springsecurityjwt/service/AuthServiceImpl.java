@@ -37,10 +37,7 @@ public class AuthServiceImpl implements AuthService {
         utenteDaCreare.setPassword(passwordCifrata);
 
         // Rendi l'utente "USER"
-        Ruolo ruoloUser = ruoloRepository.findByTipo(Ruolo.TipoRuolo.USER)
-                .orElseThrow(
-                        () -> new NotFoundException("Errore nella creazione dell'utente: non esiste il ruolo \"USER\"")
-                );
+        Ruolo ruoloUser = ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.USER);
         utenteDaCreare.getSetRuoli().add(ruoloUser);
 
         Utente utenteCreato = utenteRepository.save(utenteDaCreare); // Salva l'utente nel db
