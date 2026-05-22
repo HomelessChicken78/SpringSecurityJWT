@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.UUID;
 
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
 public class Ruolo {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
