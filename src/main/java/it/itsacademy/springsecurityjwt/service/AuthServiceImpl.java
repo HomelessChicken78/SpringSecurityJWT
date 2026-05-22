@@ -1,7 +1,9 @@
 package it.itsacademy.springsecurityjwt.service;
 
 import it.itsacademy.springsecurityjwt.dto.*;
+import it.itsacademy.springsecurityjwt.entity.Ruolo;
 import it.itsacademy.springsecurityjwt.entity.Utente;
+import it.itsacademy.springsecurityjwt.exception.NotFoundException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
 import it.itsacademy.springsecurityjwt.repository.*;
 import it.itsacademy.springsecurityjwt.security.JwtService;
@@ -33,6 +35,13 @@ public class AuthServiceImpl implements AuthService {
         // Solo l'encripter stesso potrà confrontare la password digitata con la password salvata nel db.
         String passwordCifrata = encoder.encode(utenteDaCreare.getPassword());
         utenteDaCreare.setPassword(passwordCifrata);
+
+        // Rendi l'utente "USER"
+        Ruolo ruoloUser = ruoloRepository.findByTipo(Ruolo.TipoRuolo.USER)
+                .orElseThrow(
+                        () -> new NotFoundException("Errore nella creazione dell'utente: non esiste il ruolo \"USER\"")
+                );
+        utenteDaCreare.getSetRuoli().add(ruoloUser);
 
         Utente utenteCreato = utenteRepository.save(utenteDaCreare); // Salva l'utente nel db
 

@@ -28,7 +28,8 @@ public class Utente {
             // Se la sessione è chiusa e si cercano i Ruolo viene lanciata un'eccezione.
             // Nel nostro caso usiamo Eager poichè, quando carichiamo i ruoli, abbiamo bisogno di caricare anche i ruoli
             // per evitare che la sessione venga chiusa senza caricarli.
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.MERGE // In questo modo quando salviamo un utente viene anche salvato il ruolo (aggiornando la tabella di mezzo)
     )
     @JoinTable(
             name = "utente_ruolo",
