@@ -23,6 +23,12 @@ public interface UtenteRepository extends JpaRepository<Utente, UUID> {
      Cerca tutti gli utenti che hanno un determinato ruolo
      @param tipoRuoloCercato il nome della tipologia di ruolo da cercare
      */
-    @Query("SELECT DISTINCT ut FROM Utente AS ut JOIN ut.setRuoli r WHERE r.tipo = :tipoRuoloCercato")
+    @Query("SELECT DISTINCT ut FROM Utente AS ut JOIN ut.setRuoli r WHERE r.tipo = :tipoRuoloCercato AND ut.active = true")
     List<Utente> findByTipoRuolo(Ruolo.TipoRuolo tipoRuoloCercato);
+
+    /**
+     * Cerca tutti gli utenti non cancellati del sistema
+     */
+    @Query("SELECT ut FROM Utente AS ut WHERE ut.active = true")
+    List<Utente> findAllNotDeleted();
 }
