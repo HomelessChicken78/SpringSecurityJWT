@@ -1,5 +1,6 @@
 package it.itsacademy.springsecurityjwt.controller;
 
+import it.itsacademy.springsecurityjwt.dto.LoginUtenteDTO;
 import it.itsacademy.springsecurityjwt.dto.SignUpUtenteDTO;
 import it.itsacademy.springsecurityjwt.dto.TokenDTO;
 import it.itsacademy.springsecurityjwt.service.AuthService;
@@ -19,5 +20,11 @@ public class AuthController {
     @ResponseStatus(HttpStatus.CREATED)
     public TokenDTO signUp(@RequestBody @Valid SignUpUtenteDTO signUpDto) {
         return service.signUp(signUpDto);
+    }
+
+    @PostMapping(path = "/login", consumes = json, produces = json)
+    @ResponseStatus(HttpStatus.CREATED)
+    public TokenDTO login(@RequestBody @Valid LoginUtenteDTO loginDto) {
+        return service.login(loginDto);
     }
 }

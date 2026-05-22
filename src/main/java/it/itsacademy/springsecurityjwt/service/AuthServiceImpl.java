@@ -46,15 +46,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public TokenDTO login(LoginUtenteDTO loginRequest) {
         // Cerca l'utente direttamente nel db tramite il repository
-        Utente utente = utenteRepository.findByUsername(loginRequest.getUsername())
+        Utente utenteTrovato = utenteRepository.findByUsername(loginRequest.getUsername())
                 .orElseThrow(() -> new RuntimeException("Credenziali non valide: username inesistente."));
 
         // L'encoder confronta se la password criptata nel db e la password nel dto passato (criptandola) coincidono
-        boolean passwordCoincide = encoder.matches(loginRequest.getPassword(), utente.getPassword());
+        boolean passwordCoincide = encoder.matches(loginRequest.getPassword(), utenteTrovato.getPassword());
 
         if (!passwordCoincide)
             throw new RuntimeException("Credenziali non valide: password errata.");
 
-        return null;
+        // Crea il jwt
+        String jwtCreato = jwtService.createToken(utenteTrovato.getUsername());
+
+        // Ritorna il jwt in un dto apposito
+        return new TokenDTO(jwtCreato);
     }
 }
