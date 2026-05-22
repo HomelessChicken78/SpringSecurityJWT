@@ -10,6 +10,8 @@ public interface UtenteService {
 
     UtenteDTO getUtenteByUsername(String username);
 
+    UtenteDTO getMyself();
+
     UtenteDTO updateUtente(String username, UtenteDTO utenteDTO);
 
     UtenteDTO changePassword(PasswordChangeDTO newPassword);

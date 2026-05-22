@@ -27,6 +27,11 @@ public class UtenteController {
         return service.getUtenteByUsername(username);
     }
 
+    @GetMapping(path = "/me", produces = json)
+    public UtenteDTO getMyself() {
+        return service.getMyself();
+    }
+
     @PatchMapping(path = "/{username}", consumes = json, produces = json)
     public UtenteDTO updateUtente(@PathVariable String username, @Valid @RequestBody UtenteDTO updatedUtente) {
         return service.updateUtente(username, updatedUtente);

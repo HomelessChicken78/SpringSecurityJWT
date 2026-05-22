@@ -35,6 +35,20 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
+    public UtenteDTO getMyself() {
+        // Cerca nell'autenticazione l'utente
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Controlla che l'utente sia autenticato
+        if (!auth.isAuthenticated() || auth == null)
+            throw new RuntimeException("Errore: Utente non autenticato!");
+
+        // Cerca nel database l'utente
+        Utente trovato = utenteRepository.findByUsernameOrThrow(auth.getName());
+        return mapper.toDTO(trovato);
+    }
+
+    @Override
     public UtenteDTO updateUtente(String username, UtenteDTO utenteDTO) {//UPDATE
         // Verifica l'esistenza dell'utente da modificare
         Utente utente = utenteRepository.findByUsernameOrThrow(username);
