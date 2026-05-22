@@ -159,7 +159,21 @@ public class UtenteServiceImpl implements UtenteService {
 
         // Se è già cancellato lancia un'eccezione
         if (!trovato.getActive())
-            throw new BadRequestException("L'utente è già cancellato");
+            throw new ConflictException("L'utente è già cancellato");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Controlla che l'utente sia autenticato
+        if (!auth.isAuthenticated() || auth == null)
+            throw new RuntimeException("Errore: Utente non autenticato! Impossibile cancellarlo.");
+
+        // Un utente non si può cancellare da solo
+        if (auth.getName().equals(username))
+            throw new ConflictException("Errore: Un utente non si può cancellare da solo");
+
+        // Controlla che l'utente non sia admin
+        if (!hasRole(trovato, "ADMIN"))
+            throw new ConflictException("Errore: Un admin non può esser cancellato");
 
         // Cancella l'utente corrispondente all'username fornito
         // NB: Non viene cancellato per davvero ma marcato come non attivo
