@@ -1,13 +1,11 @@
 package it.itsacademy.springsecurityjwt.config;
 
 import it.itsacademy.springsecurityjwt.dto.SignUpUtenteDTO;
-import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.entity.Ruolo;
 import it.itsacademy.springsecurityjwt.entity.Utente;
 import it.itsacademy.springsecurityjwt.repository.RuoloRepository;
 import it.itsacademy.springsecurityjwt.repository.UtenteRepository;
 import it.itsacademy.springsecurityjwt.service.AuthService;
-import it.itsacademy.springsecurityjwt.service.UtenteService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +13,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * Componente responsabile delle operazioni di inizializzazione del database all'avvio dell'applicazione.
