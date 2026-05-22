@@ -96,6 +96,9 @@ public class SecurityConfiguration {
                           // Per cambiare privilegi a un utente, devi essere ADMIN
                           .requestMatchers("/utenti/{username}/roles").hasAuthority("ADMIN")
 
+                          // Per cancellare un utente, devi essere amministrato
+                          .requestMatchers(HttpMethod.DELETE, "/utenti/{idUtente}").hasAuthority("ADMIN")
+
                           // Per gli altri devi essere almeno autenticato
                           .anyRequest().authenticated()
                 )
