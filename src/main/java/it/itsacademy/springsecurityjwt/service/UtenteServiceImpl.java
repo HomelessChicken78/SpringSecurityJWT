@@ -1,10 +1,13 @@
 package it.itsacademy.springsecurityjwt.service;
 
 import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
+import it.itsacademy.springsecurityjwt.dto.RuoloDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
+import it.itsacademy.springsecurityjwt.entity.Ruolo;
 import it.itsacademy.springsecurityjwt.entity.Utente;
 import it.itsacademy.springsecurityjwt.exception.BadRequestException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
+import it.itsacademy.springsecurityjwt.repository.RuoloRepository;
 import it.itsacademy.springsecurityjwt.repository.UtenteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -18,6 +21,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class UtenteServiceImpl implements UtenteService {
     private final UtenteRepository utenteRepository;
+    private final RuoloRepository ruoloRepository;
     private final UtenteMapper mapper;
     private final PasswordEncoder encoder;
 
@@ -84,6 +88,30 @@ public class UtenteServiceImpl implements UtenteService {
         Utente salvato = utenteRepository.save(trovato);
 
         return mapper.toDTO(salvato);
+    }
+
+    @Override
+    public UtenteDTO grantRole(String username, RuoloDTO newRole) {
+        try {
+            Ruolo newlyGrantedRole = ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.valueOf(newRole.getTipo()));
+            Utente trovato = utenteRepository.findByUsernameOrThrow(username);
+
+            // Controlla che l'utente non abbia di già quel ruolo
+            if (trovato.getSetRuoli().stream().map(r -> r.getTipo().name()).toList().contains(newRole.getTipo()))
+                throw new BadRequestException("L'utente ha già il ruolo " + newRole.getTipo());
+
+            // Controlla che il tipo di ruolo non sia "ADMIN"
+            if (newRole.getTipo().equals("ADMIN"))
+                throw new BadRequestException("Non è possibile dare un ruolo di admin");
+
+            // Aggiungi il ruolo e salva l'utente
+            trovato.getSetRuoli().add(newlyGrantedRole);
+            Utente salvato = utenteRepository.save(trovato);
+
+            return mapper.toDTO(salvato);
+        } catch (IllegalArgumentException e) { // Se non esiste nell'enum un tipo = newRole.getTipo, lancia un'eccezione di tipo IllegalArgumentException
+            throw new BadRequestException("Non esiste il tipo " + newRole.getTipo(), e);
+        }
     }
 
     @Override

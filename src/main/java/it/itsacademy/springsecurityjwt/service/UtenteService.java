@@ -1,7 +1,9 @@
 package it.itsacademy.springsecurityjwt.service;
 
 import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
+import it.itsacademy.springsecurityjwt.dto.RuoloDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
+import jakarta.validation.Valid;
 
 import java.util.Collection;
 
@@ -15,6 +17,8 @@ public interface UtenteService {
     UtenteDTO updateUtente(String username, UtenteDTO utenteDTO);
 
     UtenteDTO changePassword(PasswordChangeDTO newPassword);
+
+    UtenteDTO grantRole(String username, RuoloDTO newRole);
 
     void deleteUtente(String username);
 }

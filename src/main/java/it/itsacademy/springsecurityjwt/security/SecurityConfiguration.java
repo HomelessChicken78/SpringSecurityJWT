@@ -93,6 +93,9 @@ public class SecurityConfiguration {
                           // Per fare GET /api/utenti l'utente deve essere admin
                           .requestMatchers(HttpMethod.GET, "/utenti").hasAuthority("ADMIN")
 
+                          // Per cambiare privilegi a un utente, devi essere ADMIN
+                          .requestMatchers("/utenti/{username}/roles").hasAuthority("ADMIN")
+
                           // Per gli altri devi essere almeno autenticato
                           .anyRequest().authenticated()
                 )

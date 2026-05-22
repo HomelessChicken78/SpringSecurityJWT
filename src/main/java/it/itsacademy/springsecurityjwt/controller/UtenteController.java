@@ -1,6 +1,7 @@
 package it.itsacademy.springsecurityjwt.controller;
 
 import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
+import it.itsacademy.springsecurityjwt.dto.RuoloDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.service.UtenteService;
 import jakarta.validation.Valid;
@@ -40,6 +41,11 @@ public class UtenteController {
     @PatchMapping(path = "/me/password", consumes = json, produces = json)
     public UtenteDTO changePassword(@Valid @RequestBody PasswordChangeDTO newPassword) {
         return service.changePassword(newPassword);
+    }
+
+    @PatchMapping(path = "/{username}/roles", consumes = json, produces = json)
+    public UtenteDTO grantRole(@PathVariable String username, @Valid @RequestBody RuoloDTO newRole) {
+        return service.grantRole(username, newRole);
     }
 
     @DeleteMapping(path = "/{username}")
