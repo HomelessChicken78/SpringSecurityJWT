@@ -20,5 +20,7 @@ public interface UtenteService {
 
     UtenteDTO grantRole(String username, RuoloDTO newRole);
 
+    UtenteDTO revokeRole(String username, @Valid RuoloDTO newRole);
+
     void deleteUtente(String username);
 }

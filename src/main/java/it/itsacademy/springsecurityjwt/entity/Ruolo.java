@@ -5,7 +5,7 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Getter @Setter
+@Getter @Setter @EqualsAndHashCode(of = "idRuolo")
 @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
 public class Ruolo {

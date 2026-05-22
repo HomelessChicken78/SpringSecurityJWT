@@ -115,6 +115,30 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
+    public UtenteDTO revokeRole(String username, RuoloDTO newRole) {
+        try {
+            Ruolo newlyGrantedRole = ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.valueOf(newRole.getTipo()));
+            Utente trovato = utenteRepository.findByUsernameOrThrow(username);
+
+            // Controlla che l'utente abbia il ruolo
+            if (!trovato.getSetRuoli().stream().map(r -> r.getTipo().name()).toList().contains(newRole.getTipo()))
+                throw new BadRequestException("L'utente non ha il ruolo " + newRole.getTipo());
+
+            // Controlla che il tipo di ruolo non sia "ADMIN"
+            if (newRole.getTipo().equals("ADMIN"))
+                throw new BadRequestException("Non è possibile rimuovere un ruolo di admin");
+
+            // Rimuovi il ruolo e salva l'utente
+            trovato.getSetRuoli().remove(newlyGrantedRole); // Grazie all'equals funziona
+            Utente salvato = utenteRepository.save(trovato);
+
+            return mapper.toDTO(salvato);
+        } catch (IllegalArgumentException e) { // Se non esiste nell'enum un tipo = newRole.getTipo, lancia un'eccezione di tipo IllegalArgumentException
+            throw new BadRequestException("Non esiste il tipo " + newRole.getTipo(), e);
+        }
+    }
+
+    @Override
     public void deleteUtente(String username) {//DELETE
         // Cerca l'utente
         Utente trovato = utenteRepository.findByUsernameOrThrow(username);

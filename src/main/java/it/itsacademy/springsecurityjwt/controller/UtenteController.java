@@ -48,6 +48,11 @@ public class UtenteController {
         return service.grantRole(username, newRole);
     }
 
+    @DeleteMapping(path = "/{username}/roles", consumes = json, produces = json)
+    public UtenteDTO revokeRole(@PathVariable String username, @Valid @RequestBody RuoloDTO newRole) {
+        return service.revokeRole(username, newRole);
+    }
+
     @DeleteMapping(path = "/{username}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUtente(@PathVariable String username) {
