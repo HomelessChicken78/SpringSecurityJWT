@@ -6,6 +6,7 @@ import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.entity.Ruolo;
 import it.itsacademy.springsecurityjwt.entity.Utente;
 import it.itsacademy.springsecurityjwt.exception.BadRequestException;
+import it.itsacademy.springsecurityjwt.exception.ConflictException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
 import it.itsacademy.springsecurityjwt.repository.RuoloRepository;
 import it.itsacademy.springsecurityjwt.repository.UtenteRepository;
@@ -25,9 +26,22 @@ public class UtenteServiceImpl implements UtenteService {
     private final UtenteMapper mapper;
     private final PasswordEncoder encoder;
 
+    private boolean hasRole(Utente ut, String searchRole) {
+        try {
+            // Cerca se esiste il ruolo
+            ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.valueOf(searchRole));
+            System.out.println(ut.getSetRuoli().stream().map(r -> r.getTipo().name()).toList().contains(searchRole));
+
+            // Controlla che l'utente non abbia di già quel ruolo
+            return ut.getSetRuoli().stream().map(r -> r.getTipo().name()).toList().contains(searchRole);
+        } catch (IllegalArgumentException e) { // Se non esiste nell'enum un tipo = newRole.getTipo, lancia un'eccezione di tipo IllegalArgumentException
+            throw new BadRequestException("Non esiste il tipo " + searchRole, e);
+        }
+    }
+
     @Override
     public Collection<UtenteDTO> getAllUtenti() {
-        return mapper.toDTO(utenteRepository.findAll());
+        return mapper.toDTO(utenteRepository.findAllNotDeleted());
     }
 
     @Override
@@ -150,5 +164,6 @@ public class UtenteServiceImpl implements UtenteService {
         // Cancella l'utente corrispondente all'username fornito
         // NB: Non viene cancellato per davvero ma marcato come non attivo
         trovato.setActive(false);
+        utenteRepository.save(trovato);
     }
 }
