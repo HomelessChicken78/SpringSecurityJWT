@@ -1,11 +1,15 @@
 package it.itsacademy.springsecurityjwt.service;
 
+import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.entity.Utente;
 import it.itsacademy.springsecurityjwt.exception.BadRequestException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
 import it.itsacademy.springsecurityjwt.repository.UtenteRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,6 +19,7 @@ import java.util.Collection;
 public class UtenteServiceImpl implements UtenteService {
     private final UtenteRepository utenteRepository;
     private final UtenteMapper mapper;
+    private final PasswordEncoder encoder;
 
     @Override
     public Collection<UtenteDTO> getAllUtenti() {
@@ -43,6 +48,28 @@ public class UtenteServiceImpl implements UtenteService {
 
         // Torna l'oggetto aggiornato e lo converte in DTO
         return mapper.toDTO(updatedUtente);
+    }
+
+    @Override
+    public UtenteDTO changePassword(PasswordChangeDTO newPassword) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Controlla che l'utente sia autenticato
+        if (!auth.isAuthenticated() || auth == null)
+            throw new RuntimeException("Errore: Utente non autenticato! Impossibile cambiare la password.");
+
+        String usernameAutenticato = auth.getName(); // Chiama automaticamente auth.getPrincipal().getUsername()
+        Utente trovato = utenteRepository.findByUsernameOrThrow(usernameAutenticato); // Cerca l'utente
+
+        // Cifriamo la password: in questo modo nel db salviamo una stringa illeggibile anziché la vera password.
+        // Solo l'encripter stesso potrà confrontare la password digitata con la password salvata nel db.
+        String passwordCifrata = encoder.encode(newPassword.getPassword());
+        trovato.setPassword(passwordCifrata);
+
+        // Salva l'utente
+        Utente salvato = utenteRepository.save(trovato);
+
+        return mapper.toDTO(salvato);
     }
 
     @Override

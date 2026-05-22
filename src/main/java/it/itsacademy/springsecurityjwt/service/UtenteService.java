@@ -1,5 +1,6 @@
 package it.itsacademy.springsecurityjwt.service;
 
+import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 
 import java.util.Collection;
@@ -10,6 +11,8 @@ public interface UtenteService {
     UtenteDTO getUtenteByUsername(String username);
 
     UtenteDTO updateUtente(String username, UtenteDTO utenteDTO);
+
+    UtenteDTO changePassword(PasswordChangeDTO newPassword);
 
     void deleteUtente(String username);
 }

@@ -1,5 +1,6 @@
 package it.itsacademy.springsecurityjwt.controller;
 
+import it.itsacademy.springsecurityjwt.dto.PasswordChangeDTO;
 import it.itsacademy.springsecurityjwt.dto.UtenteDTO;
 import it.itsacademy.springsecurityjwt.service.UtenteService;
 import jakarta.validation.Valid;
@@ -26,9 +27,14 @@ public class UtenteController {
         return service.getUtenteByUsername(username);
     }
 
-    @PatchMapping(path = "/{username}", produces = json)
+    @PatchMapping(path = "/{username}", consumes = json, produces = json)
     public UtenteDTO updateUtente(@PathVariable String username, @Valid @RequestBody UtenteDTO updatedUtente) {
         return service.updateUtente(username, updatedUtente);
+    }
+
+    @PatchMapping(path = "/me/password", consumes = json, produces = json)
+    public UtenteDTO changePassword(@Valid @RequestBody PasswordChangeDTO newPassword) {
+        return service.changePassword(newPassword);
     }
 
     @DeleteMapping(path = "/{username}")
