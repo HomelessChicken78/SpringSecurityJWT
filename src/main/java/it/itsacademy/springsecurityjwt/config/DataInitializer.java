@@ -62,10 +62,8 @@ public class DataInitializer implements CommandLineRunner {
             Utente adminCreato = utenteRepository.findByUsernameOrThrow(adminUsername); // Trova l'utente appena creato
 
             // Crea i ruoli del nuovo utente
-            adminCreato.getSetRuoli().add(ruoloRepository.findByTipo(Ruolo.TipoRuolo.ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Non esiste il ruolo admin. Non posso creare un utente admin")));
-            adminCreato.getSetRuoli().add(ruoloRepository.findByTipo(Ruolo.TipoRuolo.VIEWER)
-                    .orElseThrow(() -> new RuntimeException("Non esiste il ruolo viewer. Non posso creare un utente admin")));
+            adminCreato.getSetRuoli().add(ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.ADMIN));
+            adminCreato.getSetRuoli().add(ruoloRepository.findByTipoOrThrow(Ruolo.TipoRuolo.VIEWER));
 
             utenteRepository.save(adminCreato);
         }
