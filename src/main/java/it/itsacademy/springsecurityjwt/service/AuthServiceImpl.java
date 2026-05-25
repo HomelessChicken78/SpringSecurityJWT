@@ -8,7 +8,6 @@ import it.itsacademy.springsecurityjwt.repository.*;
 import it.itsacademy.springsecurityjwt.security.JwtService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
