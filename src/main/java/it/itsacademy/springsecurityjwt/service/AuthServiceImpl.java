@@ -3,7 +3,6 @@ package it.itsacademy.springsecurityjwt.service;
 import it.itsacademy.springsecurityjwt.dto.*;
 import it.itsacademy.springsecurityjwt.entity.Ruolo;
 import it.itsacademy.springsecurityjwt.entity.Utente;
-import it.itsacademy.springsecurityjwt.exception.NotFoundException;
 import it.itsacademy.springsecurityjwt.mapper.UtenteMapper;
 import it.itsacademy.springsecurityjwt.repository.*;
 import it.itsacademy.springsecurityjwt.security.JwtService;
@@ -21,7 +20,6 @@ public class AuthServiceImpl implements AuthService {
     private final UtenteMapper mapper;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
-    private AuthenticationManager authenticationManager;
 
     @Override
     public TokenDTO signUp(SignUpUtenteDTO signUpRequest) {
